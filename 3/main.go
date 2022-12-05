@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"strings"
@@ -62,12 +63,16 @@ var scores = map[string]int{
 }
 
 func main() {
-	input, err := ioutil.ReadFile("input.txt")
+	file := flag.String("file", "", "input filename")
+	flag.Parse()
+	if *file == "" {
+		panic("file required argument")
+	}
+	content, err := ioutil.ReadFile(*file)
 	if err != nil {
 		panic(err)
 	}
-	content := string(input)
-	rucksacks := strings.Split(content, "\n")
+	rucksacks := strings.Split(string(content), "\n")
 
 	score := 0
 	for _, r := range rucksacks {

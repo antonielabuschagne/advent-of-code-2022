@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"strconv"
@@ -8,15 +9,19 @@ import (
 )
 
 func main() {
-	c, err := ioutil.ReadFile("input.txt")
+	file := flag.String("file", "", "input filename")
+	flag.Parse()
+	if *file == "" {
+		panic("file required argument")
+	}
+	content, err := ioutil.ReadFile(*file)
 	if err != nil {
 		panic(err)
 	}
-	sections := string(c)
 
 	full := 0
 	partial := 0
-	for _, s := range strings.Split(sections, "\n") {
+	for _, s := range strings.Split(string(content), "\n") {
 		elfSections := strings.Split(s, ",")
 
 		if len(elfSections) < 2 {
